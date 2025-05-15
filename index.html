@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Участие в розыгрыше</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #eef;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      max-width: 400px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div id="status">⏳ Проверка условий...</div>
+  </div>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+
+    const giveaway_id = tg.initDataUnsafe?.start_param?.split('_')[1];
+    const initData = tg.initData;
+
+    fetch("https://176.124.222.228/api/join/", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        giveaway_id: giveaway_id,
+        initData: initData
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById("status").innerText = data.message;
+    })
+    .catch(() => {
+      document.getElementById("status").innerText = "❌ Ошибка подключения к серверу";
+    });
+  </script>
+</body>
+</html>

@@ -47,8 +47,9 @@
     .then(data => {
       document.getElementById("status").innerText = data.message;
     })
-    .catch(() => {
-      document.getElementById("status").innerText = "❌ Ошибка подключения к серверу";
+    .catch((error) => {
+      console.error("Ошибка запроса:", error);
+      document.getElementById("status").innerText = "❌ Ошибка подключения к серверу: " + error.message;
     });
   </script>
 </body>

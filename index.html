@@ -32,7 +32,10 @@
     const tg = window.Telegram.WebApp;
     tg.expand();
 
-    const giveaway_id = tg.initDataUnsafe?.start_param?.split('_')[1];
+    const startParam = tg.initDataUnsafe?.start_param || "";
+    const [prefix, refPart] = startParam.split('_ref');
+    const giveaway_id = prefix?.split('_')[1];
+    const referral_id = refPart ? parseInt(refPart) : null;
     const initData = tg.initData;
 
     fetch("https://b793-2a12-5940-d895-00-2.ngrok-free.app/api/join/", {
@@ -42,7 +45,8 @@
       },
       body: JSON.stringify({
         giveaway_id: giveaway_id,
-        initData: tg.initData
+        initData: initData,
+        referral_id: referral_id
       })
     })
     .then(res => {
